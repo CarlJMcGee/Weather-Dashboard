@@ -32,12 +32,17 @@
       <h1 class="text-center m-4">Weather Dashboard</h1>
     </header>
     <main class="row">
-      <div class="city-search-container m-4 col-2">
+      <form class="city-search-container m-4 col-2">
         <h3 class="">Search For a City:</h3>
-        <input class="mb-3 w-100" type="text" placeholder="Enter City Name" />
+        <input
+          class="mb-3 w-100"
+          id="search-input"
+          type="text"
+          placeholder="Enter City Name"
+        />
         <button class="mb-3 w-100" id="search-btn" type="submit">Search</button>
         <div class="search-history-container col-4 w-100 pt-3"></div>
-      </div>
+      </form>
       <div class="weather-container col-9">
         <div class="current-weather col-1 w-100">
           <h3 class="current-city">insert city</h3>
@@ -48,8 +53,8 @@
             UV Index: <span class="px-2 favorable">0.47</span>
           </p>
         </div>
-        <h4>5-Day Forcast</h4>
-        <div class="row">
+        <h4 class="mt-2 mb-0">5-Day Forcast:</h4>
+        <div class="row ms-0">
           <div class="forcast col-2 card-body me-3 pt-1 ps-1 pb-4">
             <p class="forcast-date-1 card-title">Date</p>
             <p class="day-1-emoji card-text">🌦️</p>
