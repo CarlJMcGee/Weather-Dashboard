@@ -57,7 +57,7 @@ var city = "";
 
 var getLocation = function () {
   fetch(
-    "http://api.openweathermap.org/geo/1.0/direct?q=" +
+    "https://api.openweathermap.org/geo/1.0/direct?q=" +
       city +
       "&limit=1&appid=2d81bc1f1b05a9a201fdb0947c29daec"
   )
