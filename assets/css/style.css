@@ -26,14 +26,48 @@ header h1 {
   border-top: 3px solid lightslategrey;
 }
 
+.current-city {
+  text-transform: capitalize;
+}
+
 .current-weather {
   border: 3px solid lightslategrey;
 }
 
+.UV-severe {
+  background-color: rgb(108, 73, 201);
+  color: whitesmoke;
+  border-radius: 5px;
+}
+
+.UV-very-high {
+  background-color: rgb(217, 0, 17);
+  color: whitesmoke;
+  border-radius: 5px;
+}
+
+.UV-high {
+  background-color: rgb(249, 89, 1);
+  color: whitesmoke;
+  border-radius: 5px;
+}
+
+.UV-moderate {
+  background-color: rgb(247, 228, 1);
+  color: whitesmoke;
+  border-radius: 5px;
+}
+
+.UV-low {
+  background-color: rgb(41, 149, 1);
+  color: whitesmoke;
+  border-radius: 5px;
+}
+
 .favorable {
   color: whitesmoke;
-  background-color: green;
   border-radius: 5px;
+  background-color: green;
 }
 
 .forcast {

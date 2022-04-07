@@ -7,9 +7,9 @@ var searchBtn = document.getElementById("search-btn");
 var currentWeather = document.querySelector(".current-weather");
 var currentCity = document.querySelector(".current-city");
 var currentTemp = document.querySelector(".current-temp");
-var currentTemp = document.querySelector(".current-wind");
-var currentTemp = document.querySelector(".current-humidity");
-var currentTemp = document.querySelector(".current-uv");
+var currentWind = document.querySelector(".current-wind");
+var currentHumidity = document.querySelector(".current-humidity");
+var currentUV = document.querySelector(".current-uv");
 
 // forcast
 var day1Date = document.querySelector(".forcast-date-1");
@@ -76,6 +76,9 @@ var getWeather = function (lat, lon) {
     .then(function (response) {
       response.json().then(function (theWeather) {
         console.log(theWeather);
+
+        // update current weather
+        updateCurrentWeatherEl(theWeather.current);
       });
     })
     .catch(function (error) {
@@ -83,6 +86,25 @@ var getWeather = function (lat, lon) {
     });
 };
 
+var updateCurrentWeatherEl = function ({ temp, wind_speed, humidity, uvi }) {
+  // update current weather
+  currentCity.textContent = city;
+  currentTemp.textContent = "Temp: " + temp + "°F";
+  currentWind.textContent = "Wind: " + wind_speed + "MPH";
+  currentHumidity.textContent = "Humidity: " + humidity + "%";
+  currentUV.innerHTML =
+    "UV Index: <span class='px-2' id='UV-I'>" + uvi + "</span>";
+  var uvI = document.querySelector("span");
+  if (uvi > 10) {
+    $("#UV-I").addClass("UV-severe");
+  } else if (uvi >= 8) {
+    $("#UV-I").addClass("UV-very-high");
+  } else if (uvi >= 6) {
+    $("#UV-I").addClass("UV-high");
+  } else if (uvi >= 3) {
+    $("#UV-I").addClass("UV-moderate");
+  } else if (uvi >= 0) $("#UV-I").addClass("UV-low");
+};
 var citySearchHandler = function (e) {
   e.preventDefault();
   city = $(searchInput).val().trim();
