@@ -53,8 +53,6 @@ var calDate =
   dateObj.getFullYear() +
   ")";
 
-console.log(calDate);
-
 var city = "";
 
 var getLocation = function () {
