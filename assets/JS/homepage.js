@@ -42,6 +42,19 @@ var day5Temp = document.querySelector(".day-5-temp");
 var day5Wind = document.querySelector(".day-5-wind");
 var day5Humidity = document.querySelector(".day-5-humidity");
 
+var dateObj = new Date();
+
+var calDate =
+  "(" +
+  dateObj.getDate() +
+  "/" +
+  dateObj.getMonth() +
+  "/" +
+  dateObj.getFullYear() +
+  ")";
+
+console.log(calDate);
+
 var city = "";
 
 var getLocation = function () {
@@ -78,7 +91,10 @@ var getWeather = function (lat, lon) {
         console.log(theWeather);
 
         // update current weather
-        updateCurrentWeatherEl(theWeather.current);
+        updateCurrentWeatherEl(
+          theWeather.current,
+          theWeather.current.weather[0]
+        );
       });
     })
     .catch(function (error) {
@@ -86,9 +102,39 @@ var getWeather = function (lat, lon) {
     });
 };
 
-var updateCurrentWeatherEl = function ({ temp, wind_speed, humidity, uvi }) {
+var updateCurrentWeatherEl = function (
+  { temp, wind_speed, humidity, uvi },
+  { main }
+) {
   // update current weather
-  currentCity.textContent = city;
+  var weatherEmojiHandler = function (main) {
+    if (main === "Thunderstorm") {
+      return "⛈️";
+    } else if (main === "Drizzle" || main === "Rain") {
+      return "🌧️";
+    } else if (main === "snow") {
+      return "🌨️";
+    } else if (main === "Clear") {
+      return "☀️";
+    } else if (main === "Clouds") {
+      return "🌥️";
+    } else if (
+      main === "Mist" ||
+      main === "Smoke" ||
+      main === "Haze" ||
+      main === "Dust" ||
+      main === "Fog" ||
+      main === "Sand" ||
+      main === "Ash" ||
+      main === "Squall"
+    ) {
+      return "🌫️";
+    } else if (main === "Tornado") {
+      return "🌪️";
+    }
+  };
+  currentCity.textContent =
+    city + " " + calDate + " " + weatherEmojiHandler(main);
   currentTemp.textContent = "Temp: " + temp + "°F";
   currentWind.textContent = "Wind: " + wind_speed + "MPH";
   currentHumidity.textContent = "Humidity: " + humidity + "%";
