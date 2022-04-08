@@ -4,9 +4,12 @@
   --dark-blue: rgb(51, 71, 90);
 }
 
+body {
+  background-color: whitesmoke;
+}
+
 header h1 {
   color: whitesmoke;
-  /* margin: 20px 20px; */
   background-image: linear-gradient(to right, rgb(71, 142, 200), indigo);
 }
 
@@ -23,7 +26,7 @@ header h1 {
 }
 
 .search-history-container {
-  border-top: 3px solid lightslategrey;
+  border-top: 0.1875em solid lightslategrey;
 }
 
 .current-city {
@@ -31,42 +34,42 @@ header h1 {
 }
 
 .current-weather {
-  border: 3px solid lightslategrey;
+  border: 0.1875em solid lightslategrey;
 }
 
 .UV-severe {
   background-color: rgb(108, 73, 201);
   color: whitesmoke;
-  border-radius: 5px;
+  border-radius: 0.3125em;
 }
 
 .UV-very-high {
   background-color: rgb(217, 0, 17);
   color: whitesmoke;
-  border-radius: 5px;
+  border-radius: 0.3125em;
 }
 
 .UV-high {
   background-color: rgb(249, 89, 1);
   color: whitesmoke;
-  border-radius: 5px;
+  border-radius: 0.3125em;
 }
 
 .UV-moderate {
-  background-color: rgb(247, 228, 1);
+  background-color: rgb(214, 197, 0);
   color: whitesmoke;
-  border-radius: 5px;
+  border-radius: 0.3125em;
 }
 
 .UV-low {
   background-color: rgb(41, 149, 1);
   color: whitesmoke;
-  border-radius: 5px;
+  border-radius: 0.3125em;
 }
 
 .favorable {
   color: whitesmoke;
-  border-radius: 5px;
+  border-radius: 0.3125em;
   background-color: green;
 }
 
@@ -81,4 +84,8 @@ header h1 {
 .forcast-date {
   font-size: 1.35rem;
   font-weight: bolder;
+}
+
+.emoji {
+  font-size: 2rem;
 }

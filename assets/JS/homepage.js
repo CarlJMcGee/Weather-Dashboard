@@ -12,6 +12,8 @@ var currentHumidity = document.querySelector(".current-humidity");
 var currentUV = document.querySelector(".current-uv");
 
 // forcast
+var forcastContainer = document.querySelector(".forcast-container");
+
 var day1Date = document.querySelector(".forcast-date-1");
 var day1Emoji = document.querySelector(".day-1-emoji");
 var day1Temp = document.querySelector(".day-1-temp");
@@ -43,15 +45,10 @@ var day5Wind = document.querySelector(".day-5-wind");
 var day5Humidity = document.querySelector(".day-5-humidity");
 
 var dateObj = new Date();
-
-var currDate =
-  "(" +
-  dateObj.getDate() +
-  "/" +
-  dateObj.getMonth() +
-  "/" +
-  dateObj.getFullYear() +
-  ")";
+var day = dateObj.getDate();
+var month = dateObj.getMonth() + 1;
+var year = dateObj.getFullYear();
+var currDate = "(" + month + "/" + day + "/" + year + ")";
 
 var city = "";
 
@@ -114,7 +111,7 @@ var getWeather = (lat, lon) => {
       lat +
       "&lon=" +
       lon +
-      "&exclude=alerts&units=imperial&appid=2d81bc1f1b05a9a201fdb0947c29daec"
+      "&exclude=minutely,hourly,alerts&units=imperial&appid=2d81bc1f1b05a9a201fdb0947c29daec"
   )
     .then(function (response) {
       response.json().then(function (theWeather) {
@@ -127,7 +124,10 @@ var getWeather = (lat, lon) => {
         );
 
         //update 5-day forcast
-        for (var i = 0; i < 5; i++) {
+        // clear placeholder forcast
+        $(forcastContainer).empty();
+
+        for (var i = 1; i < 6; i++) {
           updateForcastWeather(
             theWeather.daily[i],
             theWeather.daily[i].weather[0],
@@ -148,7 +148,7 @@ var updateCurrentWeatherEl = (
 ) => {
   currentCity.textContent =
     city + " " + currDate + " " + weatherEmojiHandler(main);
-  currentTemp.textContent = "Temp: " + temp + "°F";
+  currentTemp.textContent = "Temp: " + temp + "℉";
   currentWind.textContent = "Wind: " + wind_speed + "MPH";
   currentHumidity.textContent = "Humidity: " + humidity + "%";
   currentUV.innerHTML =
@@ -180,6 +180,43 @@ var updateForcastWeather = (
   { temp, wind_speed, humidity, uvi },
   { main },
   i
-) => {};
+) => {
+  // card
+  var forcast = document.createElement("div");
+  forcast.className = "forcast col-lg-2 row-md card-body me-3 pt-1 ps-1 pb-4";
+  forcast.innerHTML = "";
+  forcastContainer.append(forcast);
+
+  // date
+  var futureDate = "(" + month + "/" + (day + i) + "/" + year + ")";
+  var forcastDate = document.createElement("p");
+  forcastDate.className = "forcast-date card-title fs-2";
+  forcastDate.innerHTML = futureDate;
+  forcast.append(forcastDate);
+
+  // emoji
+  var forcastEmoji = document.createElement("p");
+  forcastEmoji.className = "card-text emoji";
+  forcastEmoji.innerHTML = weatherEmojiHandler(main);
+  forcast.append(forcastEmoji);
+
+  // temp
+  var forcastTemp = document.createElement("p");
+  forcastTemp.className = "card-text";
+  forcastTemp.innerHTML = "Temp: " + temp.day + "℉";
+  forcast.append(forcastTemp);
+
+  //wind
+  var forcastWind = document.createElement("p");
+  forcastWind.className = "card-text";
+  forcastWind.innerHTML = "Wind: " + wind_speed + "MPH";
+  forcast.append(forcastWind);
+
+  // humidity
+  var forcastHumidity = document.createElement("p");
+  forcastHumidity.className = "card-text";
+  forcastHumidity.innerHTML = "Humidity: " + humidity + "%";
+  forcast.append(forcastHumidity);
+};
 
 $(citySearchContainer).submit(citySearchHandler);
