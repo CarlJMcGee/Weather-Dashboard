@@ -110,7 +110,7 @@ var updateCurrentWeatherEl = function (
       return "⛈️";
     } else if (main === "Drizzle" || main === "Rain") {
       return "🌧️";
-    } else if (main === "snow") {
+    } else if (main === "Snow") {
       return "🌨️";
     } else if (main === "Clear") {
       return "☀️";
