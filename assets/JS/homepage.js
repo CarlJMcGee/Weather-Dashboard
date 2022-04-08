@@ -44,7 +44,7 @@ var day5Humidity = document.querySelector(".day-5-humidity");
 
 var dateObj = new Date();
 
-var calDate =
+var currDate =
   "(" +
   dateObj.getDate() +
   "/" +
@@ -55,7 +55,34 @@ var calDate =
 
 var city = "";
 
-var getLocation = function () {
+var weatherEmojiHandler = (weatherMain) => {
+  if (weatherMain === "Thunderstorm") {
+    return "⛈️";
+  } else if (weatherMain === "Drizzle" || weatherMain === "Rain") {
+    return "🌧️";
+  } else if (weatherMain === "Snow") {
+    return "🌨️";
+  } else if (weatherMain === "Clear") {
+    return "☀️";
+  } else if (weatherMain === "Clouds") {
+    return "🌥️";
+  } else if (
+    weatherMain === "Mist" ||
+    weatherMain === "Smoke" ||
+    weatherMain === "Haze" ||
+    weatherMain === "Dust" ||
+    weatherMain === "Fog" ||
+    weatherMain === "Sand" ||
+    weatherMain === "Ash" ||
+    weatherMain === "Squall"
+  ) {
+    return "🌫️";
+  } else if (weatherMain === "Tornado") {
+    return "🌪️";
+  }
+};
+
+var getLocation = () => {
   fetch(
     "https://api.openweathermap.org/geo/1.0/direct?q=" +
       city +
@@ -64,11 +91,16 @@ var getLocation = function () {
     .then(function (response) {
       response.json().then(function (geo) {
         console.log(geo);
-        var locLat = geo[0].lat;
-        var locLon = geo[0].lon;
-        console.log(locLat);
-        console.log(locLon);
-        getWeather(locLat, locLon);
+        if (geo.length === 0) {
+          alert("City Not Found, Please Enter a Correct City Name.");
+        } else {
+          currentCity.textContent = "Loading...";
+          var locLat = geo[0].lat;
+          var locLon = geo[0].lon;
+          console.log(locLat);
+          console.log(locLon);
+          getWeather(locLat, locLon);
+        }
       });
     })
     .catch(function (error) {
@@ -76,7 +108,7 @@ var getLocation = function () {
     });
 };
 
-var getWeather = function (lat, lon) {
+var getWeather = (lat, lon) => {
   fetch(
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
       lat +
@@ -93,6 +125,15 @@ var getWeather = function (lat, lon) {
           theWeather.current,
           theWeather.current.weather[0]
         );
+
+        //update 5-day forcast
+        for (var i = 0; i < 5; i++) {
+          updateForcastWeather(
+            theWeather.daily[i],
+            theWeather.daily[i].weather[0],
+            i
+          );
+        }
       });
     })
     .catch(function (error) {
@@ -100,39 +141,13 @@ var getWeather = function (lat, lon) {
     });
 };
 
-var updateCurrentWeatherEl = function (
+// update current weather
+var updateCurrentWeatherEl = (
   { temp, wind_speed, humidity, uvi },
   { main }
-) {
-  // update current weather
-  var weatherEmojiHandler = function (main) {
-    if (main === "Thunderstorm") {
-      return "⛈️";
-    } else if (main === "Drizzle" || main === "Rain") {
-      return "🌧️";
-    } else if (main === "Snow") {
-      return "🌨️";
-    } else if (main === "Clear") {
-      return "☀️";
-    } else if (main === "Clouds") {
-      return "🌥️";
-    } else if (
-      main === "Mist" ||
-      main === "Smoke" ||
-      main === "Haze" ||
-      main === "Dust" ||
-      main === "Fog" ||
-      main === "Sand" ||
-      main === "Ash" ||
-      main === "Squall"
-    ) {
-      return "🌫️";
-    } else if (main === "Tornado") {
-      return "🌪️";
-    }
-  };
+) => {
   currentCity.textContent =
-    city + " " + calDate + " " + weatherEmojiHandler(main);
+    city + " " + currDate + " " + weatherEmojiHandler(main);
   currentTemp.textContent = "Temp: " + temp + "°F";
   currentWind.textContent = "Wind: " + wind_speed + "MPH";
   currentHumidity.textContent = "Humidity: " + humidity + "%";
@@ -159,5 +174,12 @@ var citySearchHandler = function (e) {
   console.log(city);
   getLocation();
 };
+
+// update 5-day forcast
+var updateForcastWeather = (
+  { temp, wind_speed, humidity, uvi },
+  { main },
+  i
+) => {};
 
 $(citySearchContainer).submit(citySearchHandler);
