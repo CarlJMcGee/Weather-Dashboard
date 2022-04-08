@@ -183,7 +183,8 @@ var updateForcastWeather = (
 ) => {
   // card
   var forcast = document.createElement("div");
-  forcast.className = "forcast col-lg-2 row-md card-body me-3 pt-1 ps-1 pb-4";
+  forcast.className =
+    "forcast col-lg-2 row-md card-body me-3 mb-2 pt-1 ps-1 pb-4";
   forcast.innerHTML = "";
   forcastContainer.append(forcast);
 
