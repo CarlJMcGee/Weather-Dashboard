@@ -17,36 +17,7 @@ var currentUV = document.querySelector(".current-uv");
 // forcast
 var forcastContainer = document.querySelector(".forcast-container");
 
-var day1Date = document.querySelector(".forcast-date-1");
-var day1Emoji = document.querySelector(".day-1-emoji");
-var day1Temp = document.querySelector(".day-1-temp");
-var day1Wind = document.querySelector(".day-1-wind");
-var day1Humidity = document.querySelector(".day-1-humidity");
-
-var day2Date = document.querySelector(".forcast-date-2");
-var day2Emoji = document.querySelector(".day-2-emoji");
-var day2Temp = document.querySelector(".day-2-temp");
-var day2Wind = document.querySelector(".day-2-wind");
-var day2Humidity = document.querySelector(".day-2-humidity");
-
-var day3Date = document.querySelector(".forcast-date-3");
-var day3Emoji = document.querySelector(".day-3-emoji");
-var day3Temp = document.querySelector(".day-3-temp");
-var day3Wind = document.querySelector(".day-3-wind");
-var day3Humidity = document.querySelector(".day-3-humidity");
-
-var day4Date = document.querySelector(".forcast-date-4");
-var day4Emoji = document.querySelector(".day-4-emoji");
-var day4Temp = document.querySelector(".day-4-temp");
-var day4Wind = document.querySelector(".day-4-wind");
-var day4Humidity = document.querySelector(".day-4-humidity");
-
-var day5Date = document.querySelector(".forcast-date-5");
-var day5Emoji = document.querySelector(".day-5-emoji");
-var day5Temp = document.querySelector(".day-5-temp");
-var day5Wind = document.querySelector(".day-5-wind");
-var day5Humidity = document.querySelector(".day-5-humidity");
-
+//date stuff
 var dateObj = new Date();
 var day = dateObj.getDate();
 var month = dateObj.getMonth() + 1;
@@ -60,10 +31,9 @@ var getCity = function () {
     console.log("city is null");
   } else {
     city = localStorage.getItem("currentCity");
-    getLocation();
+    getLocation(city);
   }
 };
-console.log(city);
 
 // save search history
 var searchHistory = [];
@@ -80,13 +50,14 @@ var saveSearchHistory = (city) => {
 
 // create search history
 var createSearchHistory = () => {
+  // debugger;
   var savedHistory = JSON.parse(localStorage.getItem("history"));
   console.log(savedHistory);
   $(historyContainer).empty();
   for (var i = savedHistory.length - 1; i >= 0; i--) {
-    if (savedHistory[i] === city) {
-      return false;
-    }
+    // if (savedHistory[i] === city) {
+    //   return false;
+    // }
     var historyEl = document.createElement("button");
     historyEl.className = "history-btn mb-3 w-100";
     historyEl.setAttribute("type", "submit");
@@ -95,6 +66,7 @@ var createSearchHistory = () => {
   }
 };
 
+// check for weather description and asign appropriate emoji
 var weatherEmojiHandler = (weatherMain) => {
   if (weatherMain === "Thunderstorm") {
     return "⛈️";
@@ -122,7 +94,8 @@ var weatherEmojiHandler = (weatherMain) => {
   }
 };
 
-var getLocation = () => {
+// fetch geo api for city lat and lon
+var getLocation = (city) => {
   fetch(
     "https://api.openweathermap.org/geo/1.0/direct?q=" +
       city +
@@ -148,6 +121,7 @@ var getLocation = () => {
     });
 };
 
+// fetch weather data from api
 var getWeather = (lat, lon) => {
   fetch(
     "https://api.openweathermap.org/data/2.5/onecall?lat=" +
@@ -226,7 +200,7 @@ var citySearchHandler = function (e) {
     return false;
   }
   console.log(city);
-  getLocation();
+  getLocation(city);
 };
 
 // update 5-day forcast
@@ -277,7 +251,10 @@ var updateForcastWeather = (
 // getLocation();
 getCity();
 $(citySearchContainer).submit(citySearchHandler);
-$(historyContainer).submit(function (e) {
+// search history links to city
+$(historyContainer).click(function (e) {
   e.preventDefault();
-  console.log(e.target.val);
+  console.log(e.target.textContent);
+  city = e.target.textContent;
+  getLocation(e.target.textContent);
 });
