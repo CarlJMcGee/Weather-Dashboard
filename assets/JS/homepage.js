@@ -3,6 +3,9 @@ var citySearchContainer = document.querySelector(".city-search-container");
 var searchInput = document.getElementById("search-input");
 var searchBtn = document.getElementById("search-btn");
 
+// history
+var historyContainer = document.querySelector(".search-history-container");
+
 // cuurent weather display
 var currentWeather = document.querySelector(".current-weather");
 var currentCity = document.querySelector(".current-city");
@@ -51,7 +54,46 @@ var year = dateObj.getFullYear();
 var currDate = "(" + month + "/" + day + "/" + year + ")";
 
 // set current weather from localstorage
-var city = localStorage.getItem("currentCity");
+var city = "";
+var getCity = function () {
+  if (localStorage.getItem("currentCity") === null) {
+    console.log("city is null");
+  } else {
+    city = localStorage.getItem("currentCity");
+    getLocation();
+  }
+};
+console.log(city);
+
+// save search history
+var searchHistory = [];
+var saveSearchHistory = (city) => {
+  if (localStorage.getItem("history")) {
+    searchHistory = JSON.parse(localStorage.getItem("history"));
+  }
+  searchHistory.push(city);
+  if (searchHistory.length > 8) {
+    searchHistory.splice(0, 1);
+  }
+  localStorage.setItem("history", JSON.stringify(searchHistory));
+};
+
+// create search history
+var createSearchHistory = () => {
+  var savedHistory = JSON.parse(localStorage.getItem("history"));
+  console.log(savedHistory);
+  $(historyContainer).empty();
+  for (var i = savedHistory.length - 1; i >= 0; i--) {
+    if (savedHistory[i] === city) {
+      return false;
+    }
+    var historyEl = document.createElement("button");
+    historyEl.className = "history-btn mb-3 w-100";
+    historyEl.setAttribute("type", "submit");
+    historyEl.innerHTML = savedHistory[i];
+    historyContainer.append(historyEl);
+  }
+};
 
 var weatherEmojiHandler = (weatherMain) => {
   if (weatherMain === "Thunderstorm") {
@@ -138,6 +180,9 @@ var getWeather = (lat, lon) => {
 
         // save city to localstorage
         localStorage.setItem("currentCity", city);
+
+        // create search history
+        createSearchHistory();
       });
     })
     .catch(function (error) {
@@ -172,6 +217,9 @@ var updateCurrentWeatherEl = (
 // capture city name and send it to geo locate API
 var citySearchHandler = function (e) {
   e.preventDefault();
+  if (city != "") {
+    saveSearchHistory(city);
+  }
   city = $(searchInput).val().trim();
   if (city === "") {
     alert("please enter city name");
@@ -226,5 +274,10 @@ var updateForcastWeather = (
   forcast.append(forcastHumidity);
 };
 
-getLocation();
+// getLocation();
+getCity();
 $(citySearchContainer).submit(citySearchHandler);
+$(historyContainer).submit(function (e) {
+  e.preventDefault();
+  console.log(e.target.val);
+});

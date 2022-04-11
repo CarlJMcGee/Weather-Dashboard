@@ -19,14 +19,15 @@ header h1 {
   background-color: rgb(71, 142, 200);
 }
 
-.city-search-container button {
-  border-style: none;
-  color: whitesmoke;
-  background-color: var(--grey);
-}
-
 .search-history-container {
   border-top: 0.1875em solid lightslategrey;
+}
+
+.history-btn {
+  border-style: none;
+  color: black;
+  background-color: var(--grey);
+  text-transform: capitalize;
 }
 
 .current-city {
