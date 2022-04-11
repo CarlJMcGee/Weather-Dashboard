@@ -50,7 +50,8 @@ var month = dateObj.getMonth() + 1;
 var year = dateObj.getFullYear();
 var currDate = "(" + month + "/" + day + "/" + year + ")";
 
-var city = "";
+// set current weather from localstorage
+var city = localStorage.getItem("currentCity");
 
 var weatherEmojiHandler = (weatherMain) => {
   if (weatherMain === "Thunderstorm") {
@@ -123,10 +124,10 @@ var getWeather = (lat, lon) => {
           theWeather.current.weather[0]
         );
 
-        //update 5-day forcast
         // clear placeholder forcast
         $(forcastContainer).empty();
 
+        //update 5-day forcast
         for (var i = 1; i < 6; i++) {
           updateForcastWeather(
             theWeather.daily[i],
@@ -134,6 +135,9 @@ var getWeather = (lat, lon) => {
             i
           );
         }
+
+        // save city to localstorage
+        localStorage.setItem("currentCity", city);
       });
     })
     .catch(function (error) {
@@ -164,6 +168,8 @@ var updateCurrentWeatherEl = (
     $("#UV-I").addClass("UV-moderate");
   } else if (uvi >= 0) $("#UV-I").addClass("UV-low");
 };
+
+// capture city name and send it to geo locate API
 var citySearchHandler = function (e) {
   e.preventDefault();
   city = $(searchInput).val().trim();
@@ -220,4 +226,5 @@ var updateForcastWeather = (
   forcast.append(forcastHumidity);
 };
 
+getLocation();
 $(citySearchContainer).submit(citySearchHandler);
